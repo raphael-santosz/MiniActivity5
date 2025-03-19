@@ -45,6 +45,8 @@ android {
 
 dependencies {
 
+    implementation("androidx.navigation:navigation-compose:2.7.2") // Última versão estável
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0") // Se houver integração com Hilt
     implementation("androidx.compose.material3:material3:1.1.2")
     implementation("androidx.compose.ui:ui-text:1.5.3")
     implementation(libs.androidx.core.ktx)

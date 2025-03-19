@@ -11,13 +11,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.myapplication5.R
 import com.example.myapplication5.ui.theme.MyApplication5Theme
 
 @Composable
-fun GreetingScreen(modifier: Modifier = Modifier) {
+fun GreetingScreen(navController: NavHostController, modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val navigationToastMessage = stringResource(R.string.navigation_toast) // 🔥 Correção aqui
+    val navigationToastMessage = stringResource(R.string.navigation_toast)
 
     var byeMessage by rememberSaveable { mutableStateOf("") }
     var repetitions by rememberSaveable { mutableStateOf("") }
@@ -69,20 +70,23 @@ fun GreetingScreen(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-                Toast.makeText(context, navigationToastMessage, Toast.LENGTH_SHORT).show()  // 🔥 Correção aqui
+                if (byeMessage.isNotBlank() && repetitions.isNotBlank() && !repetitionsError) {
+                    navController.navigate("bye_screen/$byeMessage/$repetitions")
+                } else {
+                    Toast.makeText(context, "Preencha os campos corretamente", Toast.LENGTH_SHORT).show()
+                }
             },
-            enabled = !repetitionsError
+            enabled = true
         ) {
             Text(text = stringResource(R.string.go_to_bye_screen))
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingScreenPreview() {
     MyApplication5Theme {
-        GreetingScreen()
+        GreetingScreen(navController = NavHostController(LocalContext.current))
     }
 }

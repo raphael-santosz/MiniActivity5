@@ -8,4 +8,6 @@
 <string name="error_repetitions">Enter a valid number of repetitions</string>
 <string name="go_to_bye_screen">Go to bye screen</string>
 <string name="navigation_toast">Navegação ainda não implementada</string>
+<string name="go_back">Go back</string>
+
 </resources>
