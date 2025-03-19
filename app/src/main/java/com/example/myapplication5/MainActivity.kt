@@ -12,6 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplication5.ui.theme.MyApplication5Theme
@@ -33,6 +34,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
+    val navigationToastMessage = stringResource(R.string.navigation_toast) // 🔥 Correção aqui
 
     var byeMessage by rememberSaveable { mutableStateOf("") }
     var repetitions by rememberSaveable { mutableStateOf("") }
@@ -45,15 +47,15 @@ fun GreetingScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Hello World!", style = MaterialTheme.typography.headlineMedium)
+        Text(text = stringResource(R.string.hello_world), style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(text = "Introduce the Bye Message:")
+        Text(text = stringResource(R.string.introduce_bye_message))
         TextField(
             value = byeMessage,
             onValueChange = { byeMessage = it },
-            placeholder = { Text("Enter text for the Bye greeting here") },
+            placeholder = { Text(stringResource(R.string.enter_bye_greeting)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -62,20 +64,19 @@ fun GreetingScreen(modifier: Modifier = Modifier) {
         TextField(
             value = repetitions,
             onValueChange = {
-                if (it.all { char -> char.isDigit() }) {  // Garante que apenas números sejam aceitos
+                if (it.all { char -> char.isDigit() }) {
                     repetitions = it
                     repetitionsError = it.isEmpty() || it.toIntOrNull() == null || it.toInt() <= 0
                 }
             },
-            placeholder = { Text("Enter number of repetitions here") },
+            placeholder = { Text(stringResource(R.string.enter_repetitions)) },
             isError = repetitionsError,
             modifier = Modifier.fillMaxWidth()
         )
 
-
         if (repetitionsError) {
             Text(
-                text = "Enter a valid number of repetitions",
+                text = stringResource(R.string.error_repetitions),
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(top = 4.dp)
             )
@@ -85,11 +86,11 @@ fun GreetingScreen(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-                Toast.makeText(context, "Navegação ainda não implementada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, navigationToastMessage, Toast.LENGTH_SHORT).show()  // 🔥 Correção aqui
             },
             enabled = !repetitionsError
         ) {
-            Text(text = "Go to bye screen")
+            Text(text = stringResource(R.string.go_to_bye_screen))
         }
     }
 }
