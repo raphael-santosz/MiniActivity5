@@ -12,6 +12,8 @@ import com.example.myapplication5.R
 
 @Composable
 fun ByeScreen(navController: NavController, byeMessage: String, repetitions: Int) {
+    val finalMessage = byeMessage.repeat(repetitions)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -19,11 +21,18 @@ fun ByeScreen(navController: NavController, byeMessage: String, repetitions: Int
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = byeMessage.repeat(repetitions))
+        Text(text = finalMessage)
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Button(onClick = { navController.popBackStack() }) {
+        Button(
+            onClick = {
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("finalMessage", finalMessage) // 🔥 Correção aqui
+                navController.popBackStack()
+            }
+        ) {
             Text(text = stringResource(R.string.go_back))
         }
     }

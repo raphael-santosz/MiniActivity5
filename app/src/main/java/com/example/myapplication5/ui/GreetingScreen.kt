@@ -24,6 +24,17 @@ fun GreetingScreen(navController: NavHostController, modifier: Modifier = Modifi
     var repetitions by rememberSaveable { mutableStateOf("") }
     var repetitionsError by remember { mutableStateOf(false) }
 
+    var finalMessage by remember { mutableStateOf("") }
+
+    LaunchedEffect(navController.currentBackStackEntry) {
+        val returnedMessage = navController
+            .currentBackStackEntry
+            ?.savedStateHandle
+            ?.get<String>("finalMessage")
+
+        finalMessage = returnedMessage ?: context.getString(R.string.hello_world) // 🔥 Correção aqui
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -31,7 +42,7 @@ fun GreetingScreen(navController: NavHostController, modifier: Modifier = Modifi
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = stringResource(R.string.hello_world), style = MaterialTheme.typography.headlineMedium)
+        Text(text = finalMessage, style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -71,6 +82,7 @@ fun GreetingScreen(navController: NavHostController, modifier: Modifier = Modifi
         Button(
             onClick = {
                 if (byeMessage.isNotBlank() && repetitions.isNotBlank() && !repetitionsError) {
+                    finalMessage = byeMessage.repeat(repetitions.toInt())
                     navController.navigate("bye_screen/$byeMessage/$repetitions")
                 } else {
                     Toast.makeText(context, "Preencha os campos corretamente", Toast.LENGTH_SHORT).show()
