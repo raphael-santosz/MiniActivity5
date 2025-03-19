@@ -1,4 +1,4 @@
-package com.example.myapplication5.ui.theme
+package com.example.myapplication5.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
